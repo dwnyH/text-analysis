@@ -46,6 +46,11 @@ textarea {
 
 .result div {
     cursor: pointer;
+    display: inline-block;
+    width: -webkit-fit-content;
+    height: -webkit-fit-content;
+    text-align: center;
+    vertical-align: center;
 }
 
 .result div:hover {
@@ -135,9 +140,10 @@ header {
     margin-bottom: 50px;
     margin-left: 150px;
     margin-right: 150px;
-    display: grid;
-    grid-template-columns: min-content 1fr repeat(3, 2fr) 3fr 1fr;
-    grid-template-rows: repeat(2fr, 3fr);
-    grid-gap : 5px;
+    display: inline-block;
+    //display: grid;
+    //grid-template-columns: min-content 1fr repeat(3, 2fr) 3fr 1fr;
+    //grid-template-rows: repeat(2fr, 3fr);
+    //grid-gap : 5px;
     place-items: center middle;
 }

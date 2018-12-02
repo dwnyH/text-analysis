@@ -35,10 +35,24 @@ function saveWords (wordSave) {
     wordSave = {};
     debugger;
     var content = document.querySelector('.content');
-    content.value = content.value.replace("\n", " ");
-    content.value = content.value.replace("\'", "");
-    var inputWords = content.value.split(" ");
+
+    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    var inputText = content.value.split("");
+    for (var i = 0; i < inputText.length; i++) {
+        if (inputText[i] === "\n") {
+            inputText[i] = " "
+        }
+        if(regExp.test(inputText[i])){
+            inputText[i] = "";
+        }
+    }
+
+    inputText = inputText.join('');
+    content.value.replace("\n", " ");
+    content.value.replace("\'", "");
+    var inputWords = inputText.split(" ");
     var filteredWords = checkWords(inputWords);
+
     for (var i = 0; i < filteredWords.length; i++) {
         if (!wordSave.hasOwnProperty(filteredWords[i])) {
             wordSave[filteredWords[i]] = 1;
@@ -53,24 +67,17 @@ function saveWords (wordSave) {
 function checkWords (vocabArray) {
     var filterArray = [];
     var preposition = ['in', 'out', 'off', 'up', 'on', 'by', 'at', 'for', 'to', 'of', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'anti', 'around', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'concerning', 'considering', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'following', 'for', 'from', 'in', 'inside', 'into', 'like', 'minus', 'near', 'onto', 'opposite', 'outside', 'over', 'past', 'plus', 'regarding', 'round', 'save', 'since', 'than', 'through', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without'];
-    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'youre', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
+    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'your', 'youre', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
     var modalVerbs = ['can', 'could', 'able', 'may', 'might', 'shall', 'should', 'must', 'has', 'have', 'will', 'would', 'the', 'and'];
     var beVerbs = ['is', 'are', 'am', 'was', 'were', 'been', 'be', 'being', 're'];
-    var conjunction = ['though', 'although', 'though', 'while', 'if', 'only', 'unless', 'until', 'provided', 'assuming', 'that', 'even', 'case', 'than', 'rather', 'whether', 'much', 'whereas', 'because', 'since', 'so', 'why', 'how', 'who', 'whoever', 'whom', 'whomever', 'whose', 'where', 'wherever', 'which', 'whatever','after', 'before', 'now', 'once', 'since', 'till', 'until', 'when', 'whenever', 'while'];
-    vocabArray.filter(function (item) {
-        debugger;
-        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        if(regExp.test(item)){
-            item = item.replace(regExp, "");
-        }
+    var conjunction = ['though', 'although', 'though', 'while', 'if', 'only', 'unless', 'until', 'provided', 'assuming', 'that', 'even', 'case', 'than', 'rather', 'whether', 'much', 'whereas', 'because', 'since', 'so', 'why', 'how', 'who', 'whoever', 'whom', 'whomever', 'whose', 'where', 'wherever', 'which', 'whatever','after', 'before', 'now', 'once', 'since', 'till', 'until', 'when', 'whenever', 'while', 'or'];
 
-        item = item.replace("\n", "");
-        item = item.replace("/\"/gi", "");
-        item = item.replace('\"', "");
-        item = item.replace("\'", "");
+    vocabArray.filter(function (item) {
         item = item.toLowerCase();
         if (conjunction.indexOf(item) === -1 && beVerbs.indexOf(item) === -1 && preposition.indexOf(item) === -1 && pronoun.indexOf(item) === -1 && modalVerbs.indexOf(item) === -1 && item.length >= 2) {
-            filterArray.push(item);
+            if (!Number(item)) {
+                filterArray.push(item);
+            }
         }
     });
     return filterArray;

@@ -24,7 +24,7 @@ function countChars (event) {
         }
     }
 
-    if (keycode === 32) {
+    if (keycode === 32 || keycode === 13) {
         saveWords(wordStorage);
     }
 }
@@ -33,7 +33,10 @@ var result = document.querySelector('.result');
 
 function saveWords (wordSave) {
     wordSave = {};
+    debugger;
     var content = document.querySelector('.content');
+    content.value = content.value.replace("\n", " ");
+    content.value = content.value.replace("\'", "");
     var inputWords = content.value.split(" ");
     var filteredWords = checkWords(inputWords);
     for (var i = 0; i < filteredWords.length; i++) {
@@ -50,11 +53,12 @@ function saveWords (wordSave) {
 function checkWords (vocabArray) {
     var filterArray = [];
     var preposition = ['in', 'out', 'off', 'up', 'on', 'by', 'at', 'for', 'to', 'of', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'anti', 'around', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'concerning', 'considering', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'following', 'for', 'from', 'in', 'inside', 'into', 'like', 'minus', 'near', 'onto', 'opposite', 'outside', 'over', 'past', 'plus', 'regarding', 'round', 'save', 'since', 'than', 'through', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without'];
-    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'youre', 'our', 'he', 'hes', 'him', 'his', 'she', 'her', 'they', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
+    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'youre', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
     var modalVerbs = ['can', 'could', 'able', 'may', 'might', 'shall', 'should', 'must', 'has', 'have', 'will', 'would', 'the', 'and'];
     var beVerbs = ['is', 'are', 'am', 'was', 'were', 'been', 'be', 'being', 're'];
     var conjunction = ['though', 'although', 'though', 'while', 'if', 'only', 'unless', 'until', 'provided', 'assuming', 'that', 'even', 'case', 'than', 'rather', 'whether', 'much', 'whereas', 'because', 'since', 'so', 'why', 'how', 'who', 'whoever', 'whom', 'whomever', 'whose', 'where', 'wherever', 'which', 'whatever','after', 'before', 'now', 'once', 'since', 'till', 'until', 'when', 'whenever', 'while'];
     vocabArray.filter(function (item) {
+        debugger;
         var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
         if(regExp.test(item)){
             item = item.replace(regExp, "");
@@ -73,6 +77,7 @@ function checkWords (vocabArray) {
 }
 
 function showResult(storage) {
+
     while ( result.hasChildNodes() ) {
         result.removeChild( result.firstChild );
     }
@@ -89,15 +94,15 @@ function showResult(storage) {
             word.classList.add('low');
         }
 
-        if (storage[keys] >= 2 && storage[keys] < 5) {
+        if (storage[keys] >= 2 && storage[keys] < 4) {
             word.classList.add('middle');
         }
 
-        if (storage[keys] >= 5 && storage[keys] < 7) {
+        if (storage[keys] >= 4 && storage[keys] < 6) {
             word.classList.add('high');
         }
 
-        if (storage[keys] >= 7) {
+        if (storage[keys] >= 6) {
             word.classList.add('superHigh');
         }
 

@@ -16,7 +16,6 @@ function countChars (event) {
     var keycode = event.keyCode;
 
     if (content.value.length > 5000) {
-        debugger;
         if(confirm("5000자 미만으로 입력해주세요.")) {
             return;
         } else {
@@ -33,7 +32,6 @@ var result = document.querySelector('.result');
 
 function saveWords (wordSave) {
     wordSave = {};
-    debugger;
     var content = document.querySelector('.content');
 
     var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
@@ -67,8 +65,8 @@ function saveWords (wordSave) {
 function checkWords (vocabArray) {
     var filterArray = [];
     var preposition = ['in', 'out', 'off', 'up', 'on', 'by', 'at', 'for', 'to', 'of', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'anti', 'around', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'concerning', 'considering', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'following', 'for', 'from', 'in', 'inside', 'into', 'like', 'minus', 'near', 'onto', 'opposite', 'outside', 'over', 'past', 'plus', 'regarding', 'round', 'save', 'since', 'than', 'through', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without'];
-    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'your', 'youre', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
-    var modalVerbs = ['can', 'could', 'able', 'may', 'might', 'shall', 'should', 'must', 'has', 'have', 'will', 'would', 'the', 'and'];
+    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'your', 'youre', 'there', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
+    var modalVerbs = ['can', 'could', 'able', 'may', 'might', 'shall', 'should', 'shouldnt', 'must', 'has', 'hasnt', 'have', 'havent', 'will', 'wont', 'would', 'wouldnt', 'the', 'and'];
     var beVerbs = ['is', 'are', 'am', 'was', 'were', 'been', 'be', 'being', 're'];
     var conjunction = ['though', 'although', 'though', 'while', 'if', 'only', 'unless', 'until', 'provided', 'assuming', 'that', 'even', 'case', 'than', 'rather', 'whether', 'much', 'whereas', 'because', 'since', 'so', 'why', 'how', 'who', 'whoever', 'whom', 'whomever', 'whose', 'where', 'wherever', 'which', 'whatever','after', 'before', 'now', 'once', 'since', 'till', 'until', 'when', 'whenever', 'while', 'or'];
 
@@ -114,5 +112,33 @@ function showResult(storage) {
         }
 
         result.appendChild(word);
+        var newNotice = document.querySelector('.notice');
+        newNotice.style.display = 'block';
+
+        word.addEventListener('click',moveElements);
+    }
+}
+
+function arrangeLikes() {
+    var likeWords = document.querySelectorAll('.like');
+    var wordBox = document.querySelector('.newWordBox');
+    console.log(1);
+    debugger;
+    for (var i = 0; i < likeWords.length; i++) {
+        likeWords[i].className = '';
+        wordBox.appendChild(likeWords[i]);
+    }
+}
+
+function moveElements(event) {
+    var target = event.target;
+    target.classList.add('like');
+    var likes = document.querySelectorAll('.like');
+    var newTextbox = document.querySelector('.newSentence');
+    if (likes.length === 5) {
+        // newTextbox.style.display = "block";
+        setTimeout(arrangeLikes,300);
+        var newNotice = document.querySelector('.notice');
+        newNotice.style.display = 'none';
     }
 }

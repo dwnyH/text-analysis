@@ -3,8 +3,65 @@
 // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
 html, body {
     box-sizing: border-box;
-    background-color: pink;
+    background-color: rgb(250, 251, 252);
 }
+
 *, *:before, *:after {
     box-sizing: inherit;
+}
+
+.title {
+    font-size: 45px;
+    text-align: center;
+    margin: 10px;
+}
+
+.inputArea {
+    text-align: center;
+    font-family: "Merriweather", "Georgia", serif;
+}
+.content[type=text] {
+    -webkit-ime-mode:disabled;
+    -moz-ime-mode:disabled;
+    -ms-ime-mode:disabled;
+    ime-mode:disabled;
+}
+
+.result {
+    text-align: center;
+    width : 600px;
+    height : 600px;
+    border: 1px solid gray;
+    margin : 0 auto;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.result div {
+    display: inline;
+}
+
+.low {
+    font-size: 20px;
+    font-weight: 600;
+    color: darkkhaki;
+}
+
+.middle {
+    font-size: 25px;
+    font-weight: 600;
+    color: darkolivegreen;
+}
+
+.high {
+    font-size: 30px;
+    font-weight: 700;
+    color: darkgoldenrod;
+}
+
+.superHigh {
+    font-size: 40px;
+    font-weight: 700;
+    color: gold;
 }

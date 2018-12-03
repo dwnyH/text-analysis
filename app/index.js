@@ -47,7 +47,7 @@ function saveWords (wordSave) {
             }
         }
 
-        if (text[i].charCodeAt() > 90 && text[i].charCodeAt() < 97){
+        if (text[i].charCodeAt() > 90 && text[i].charCodeAt() < 97) {
             text[i] = '';
         }
 
@@ -154,7 +154,7 @@ function moveElements(event) {
 
     if (likes.length === 5) {
         setTimeout(arrangeLikes,300);
-        newNotice.innerHTML = 'Choose your favorite word!'
+        newNotice.innerHTML = 'Choose your favorite word!';
     }
 }
 

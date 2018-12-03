@@ -80,7 +80,7 @@ function saveWords (wordSave) {
 
 function checkWords (vocabArray) {
     var filterArray = [];
-    var preposition = ['in', 'out', 'off', 'up', 'on', 'by', 'at', 'for', 'to', 'of', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'anti', 'around', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'concerning', 'considering', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'following', 'for', 'from', 'in', 'inside', 'into', 'like', 'minus', 'near', 'onto', 'opposite', 'outside', 'over', 'past', 'plus', 'regarding', 'round', 'save', 'since', 'than', 'through', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without'];
+    var preposition = ['in', 'out', 'off', 'up', 'on', 'by', 'at', 'for', 'to', 'of', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'anti', 'around', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'concerning', 'considering', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'following', 'for', 'from', 'in', 'inside', 'into', 'like', 'minus', 'near', 'onto', 'opposite', 'outside', 'over', 'past', 'plus', 'regarding', 'round', 'save', 'since', 'than', 'through', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without', 'not', 'no'];
     var pronoun = ['an', 'i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'your', 'youre', 'there', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
     var modalVerbs = ['can', 'could', 'able', 'may', 'might', 'shall', 'should', 'shouldnt', 'must', 'has', 'hasnt', 'have', 'havent', 'will', 'wont', 'would', 'wouldnt', 'the', 'and'];
     var beVerbs = ['is', 'are', 'am', 'was', 'were', 'been', 'be', 'being', 're'];
@@ -98,9 +98,12 @@ function checkWords (vocabArray) {
 }
 
 function showResult(storage) {
+    var a = [];
 
-    while ( result.hasChildNodes() ) {
-        result.removeChild( result.firstChild );
+    while (result.children.length > 1) {
+        if (result.lastElementChild.className !== 'superhighArea') {
+            result.removeChild(result.lastElementChild);
+        }
     }
 
     for (var keys in storage) {
@@ -114,24 +117,38 @@ function showResult(storage) {
 
         if (storage[keys] < 2) {
             word.classList.add('low');
+            result.appendChild(word);
         }
 
         if (storage[keys] >= 2 && storage[keys] < 4) {
             word.classList.add('middle');
+            result.appendChild(word);
         }
 
         if (storage[keys] >= 4 && storage[keys] < 6) {
             word.classList.add('high');
+            result.appendChild(word);
         }
 
         if (storage[keys] >= 6) {
             word.classList.add('superHigh');
+            a.push(word);
+            //result.appendChild(word);
+            // highFrequencyArea.appendChild(word);
         }
-
-        result.appendChild(word);
-        var newNotice = document.querySelector('.notice');
-        newNotice.style.display = 'block';
     }
+    debugger;
+    var allWords = document.querySelectorAll('.keyWords');
+    for (var i = 0; i < a.length; i++) {
+        result.insertBefore(a[i], allWords[parseInt(Object.keys(storage).length / 2)]);
+    }
+    // console.log(Object.keys(storage).length);
+    // var allWords = document.querySelectorAll('.keyWords');
+    // result.insertBefore(highFrequencyArea, parseInt(allWords[Object.keys(storage).length / 2]));
+
+    var newNotice = document.querySelector('.notice');
+    newNotice.style.display = 'block';
+
 }
 
 function moveElements(event) {
@@ -143,7 +160,7 @@ function moveElements(event) {
         // newTextbox.style.display = "block";
         setTimeout(arrangeLikes,300);
         var newNotice = document.querySelector('.notice');
-        newNotice.innerHTML = "Try to make a sentence with your favorite!"
+        newNotice.innerHTML = "Try to make a sentence with your favorite word!"
     }
 }
 
@@ -155,6 +172,7 @@ function arrangeLikes() {
         likeWords[i].className = '';
         likeWords[i].removeEventListener('click', moveElements);
         wordBox.appendChild(likeWords[i]);
+
         likeWords[i].addEventListener('click', writingForm);
     }
 }
@@ -162,11 +180,29 @@ function arrangeLikes() {
 function writingForm(event) {
     // var notePad = document.querySelector('.newSentence');
     // notePad.style.display = 'block';
-    debugger;
     var writeSentence = document.querySelector('.writingFunction');
     writeSentence.style.display = 'block';
     var favoriteWord = event.target;
     console.log(favoriteWord);
     var favoriteWordBox = document.querySelector('.favoriteWord');
     favoriteWordBox.innerHTML = favoriteWord.innerText;
+
+    var completeButton = document.querySelector('.complete');
+    completeButton.addEventListener('click', showCompletedSentence);
+}
+
+function showCompletedSentence() {
+    var writeSentence = document.querySelector('.writingArea');
+    writeSentence.style.display = 'none';
+    var completeButton = document.querySelector('.complete');
+    completeButton.style.display = 'none';
+
+    var completedSentence = document.createElement('div');
+    var sentenceByUser = document.querySelector('.newSentence');
+    completedSentence.innerHTML = sentenceByUser.value;
+    completedSentence.classList.add('completedSentence');
+    var completeBox = document.querySelector('.completeBox');
+
+    completeBox.appendChild(completedSentence);
+    completedSentence.classList.add('show');
 }

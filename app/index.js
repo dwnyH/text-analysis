@@ -60,6 +60,11 @@ function saveWords (wordSave) {
     }
     showResult(wordSave);
     console.log(wordSave);
+    var keyWords = document.querySelectorAll('.keyWords');
+
+    for (var i = 0; i < keyWords.length; i++) {
+        keyWords[i].addEventListener('click', moveElements);
+    }
 }
 
 function checkWords (vocabArray) {
@@ -94,6 +99,7 @@ function showResult(storage) {
         word.innerText = keys;
         frequency.innerText = storage[keys];
         word.appendChild(frequency);
+        word.classList.add('keyWords');
 
         if (storage[keys] < 2) {
             word.classList.add('low');
@@ -114,19 +120,6 @@ function showResult(storage) {
         result.appendChild(word);
         var newNotice = document.querySelector('.notice');
         newNotice.style.display = 'block';
-
-        word.addEventListener('click',moveElements);
-    }
-}
-
-function arrangeLikes() {
-    var likeWords = document.querySelectorAll('.like');
-    var wordBox = document.querySelector('.newWordBox');
-    console.log(1);
-    debugger;
-    for (var i = 0; i < likeWords.length; i++) {
-        likeWords[i].className = '';
-        wordBox.appendChild(likeWords[i]);
     }
 }
 
@@ -139,6 +132,28 @@ function moveElements(event) {
         // newTextbox.style.display = "block";
         setTimeout(arrangeLikes,300);
         var newNotice = document.querySelector('.notice');
-        newNotice.style.display = 'none';
+        newNotice.innerHTML = "Try to make a sentence with your favorite!"
     }
+}
+
+function arrangeLikes() {
+    var likeWords = document.querySelectorAll('.like');
+    var wordBox = document.querySelector('.newWordBox');
+
+    for (var i = 0; i < likeWords.length; i++) {
+        likeWords[i].className = '';
+        likeWords[i].removeEventListener('click', moveElements);
+        wordBox.appendChild(likeWords[i]);
+        likeWords[i].addEventListener('click', writingForm);
+    }
+}
+
+function writingForm(event) {
+    // var notePad = document.querySelector('.newSentence');
+    // notePad.style.display = 'block';
+    debugger;
+    var favoriteWord = event.target;
+    console.log(favoriteWord);
+    var favoriteWordBox = document.querySelector('.favoriteWord');
+    favoriteWordBox.innerHTML = favoriteWord.innerText;
 }

@@ -23,9 +23,7 @@ function countChars (event) {
         }
     }
 
-    if (keycode === 32 || keycode === 13) {
-        saveWords(wordStorage);
-    }
+    saveWords(wordStorage);
 }
 
 var result = document.querySelector('.result');
@@ -33,21 +31,24 @@ var result = document.querySelector('.result');
 function saveWords (wordSave) {
     wordSave = {};
     var content = document.querySelector('.content');
+    var checkAgain = content.value.split("");
 
-    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-    var inputText = content.value.split("");
-    for (var i = 0; i < inputText.length; i++) {
-        if (inputText[i] === "\n") {
-            inputText[i] = " "
+    for (var i = 0; i < checkAgain.length; i++) {
+        if(checkAgain[i].charCodeAt() > 122){
+            checkAgain[i] = "";
         }
-        if(regExp.test(inputText[i])){
-            inputText[i] = "";
+        if(checkAgain[i].charCodeAt() < 65  && checkAgain[i].charCodeAt() !== 32){
+            checkAgain[i] = "";
+        }
+        if(checkAgain[i].charCodeAt() > 90 && checkAgain[i].charCodeAt() < 97){
+            checkAgain[i] = "";
+        }
+        if (checkAgain[i] === "\n") {
+            checkAgain[i] = " "
         }
     }
 
-    inputText = inputText.join('');
-    content.value.replace("\n", " ");
-    content.value.replace("\'", "");
+    var inputText = checkAgain.join('');
     var inputWords = inputText.split(" ");
     var filteredWords = checkWords(inputWords);
 
@@ -70,7 +71,7 @@ function saveWords (wordSave) {
 function checkWords (vocabArray) {
     var filterArray = [];
     var preposition = ['in', 'out', 'off', 'up', 'on', 'by', 'at', 'for', 'to', 'of', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'anti', 'around', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'concerning', 'considering', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'following', 'for', 'from', 'in', 'inside', 'into', 'like', 'minus', 'near', 'onto', 'opposite', 'outside', 'over', 'past', 'plus', 'regarding', 'round', 'save', 'since', 'than', 'through', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without'];
-    var pronoun = ['i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'your', 'youre', 'there', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
+    var pronoun = ['an', 'i', 'im', 'my', 'me', 'mine', 'it', 'its', 'you', 'your', 'youre', 'there', 'we', 'us', 'our', 'he', 'hes', 'him', 'his', 'she', 'shes', 'her', 'they', 'theyre', 'them', 'their', 'what', 'whom', 'mine', 'yours', 'hers', 'ours', 'theirs', 'this', 'that', 'these', 'those', 'which', 'whose', 'whoever', 'whatever', 'whichever', 'whomever', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'other', 'another', 'anything', 'everybody', 'another', 'each', 'few', 'many', 'none', 'some', 'all', 'any', 'anybody', 'anyone', 'everyone', 'everything', 'nobody', 'nothing', 'none', 'others', 'several', 'somebody', 'someone', 'something', 'most', 'enough', 'little', 'more', 'both', 'either', 'neither', 'much', 'such'];
     var modalVerbs = ['can', 'could', 'able', 'may', 'might', 'shall', 'should', 'shouldnt', 'must', 'has', 'hasnt', 'have', 'havent', 'will', 'wont', 'would', 'wouldnt', 'the', 'and'];
     var beVerbs = ['is', 'are', 'am', 'was', 'were', 'been', 'be', 'being', 're'];
     var conjunction = ['though', 'although', 'though', 'while', 'if', 'only', 'unless', 'until', 'provided', 'assuming', 'that', 'even', 'case', 'than', 'rather', 'whether', 'much', 'whereas', 'because', 'since', 'so', 'why', 'how', 'who', 'whoever', 'whom', 'whomever', 'whose', 'where', 'wherever', 'which', 'whatever','after', 'before', 'now', 'once', 'since', 'till', 'until', 'when', 'whenever', 'while', 'or'];

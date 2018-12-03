@@ -7,15 +7,15 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 // ================================
 
 var content = document.querySelector('.content');
-content.addEventListener('keydown', countChars);
+var result = document.querySelector('.result');
+content.addEventListener('keydown', countCharacters);
 
-function countChars (event) {
+function countCharacters () {
     var wordStorage = {};
     var content = document.querySelector('.content');
-    var keycode = event.keyCode;
 
     if (content.value.length > 5000) {
-        if(confirm("5000자 미만으로 입력해주세요.")) {
+        if (confirm('5000자 미만으로 입력해주세요.')) {
             return;
         } else {
             return;
@@ -25,39 +25,38 @@ function countChars (event) {
     saveWords(wordStorage);
 }
 
-var result = document.querySelector('.result');
-
 function saveWords (wordSave) {
-    wordSave = {};
     var content = document.querySelector('.content');
     var textCount = content.value.length;
     var countBox = document.querySelector('.textCount');
+    var text = content.value.split('');
 
-    countBox.innerHTML = "Text Count : " + textCount;
+    countBox.innerHTML = 'Text Count : ' + textCount;
+    wordSave = {};
 
-    var checkAgain = content.value.split("");
-
-    for (var i = 0; i < checkAgain.length; i++) {
-        if(checkAgain[i].charCodeAt() > 122){
-            checkAgain[i] = "";
+    for (var i = 0; i < text.length; i++) {
+        if (text[i].charCodeAt() > 122) {
+            text[i] = '';
         }
-        if(checkAgain[i].charCodeAt() < 65  && checkAgain[i].charCodeAt() !== 32){
-            if (checkAgain[i].charCodeAt() === 13 || checkAgain[i].charCodeAt() === 10) {
-                checkAgain[i] = " ";
+
+        if (text[i].charCodeAt() < 65  && text[i].charCodeAt() !== 32) {
+            if (text[i].charCodeAt() === 13 || text[i].charCodeAt() === 10) {
+                text[i] = ' ';
             } else {
-                checkAgain[i] = "";
+                text[i] = '';
             }
         }
-        if(checkAgain[i].charCodeAt() > 90 && checkAgain[i].charCodeAt() < 97){
-            checkAgain[i] = "";
+
+        if (text[i].charCodeAt() > 90 && text[i].charCodeAt() < 97){
+            text[i] = '';
         }
-        if (checkAgain[i] === "\n") {
-            checkAgain[i] = " "
+
+        if (text[i] === '\n') {
+            text[i] = ' ';
         }
     }
 
-    var inputText = checkAgain.join('');
-    var inputWords = inputText.split(" ");
+    var inputWords = text.join('').split(' ');
     var filteredWords = checkWords(inputWords);
 
     for (var i = 0; i < filteredWords.length; i++) {
@@ -67,7 +66,9 @@ function saveWords (wordSave) {
             wordSave[filteredWords[i]]++;
         }
     }
+
     showResult(wordSave);
+
     var keyWords = document.querySelectorAll('.keyWords');
 
     for (var i = 0; i < keyWords.length; i++) {
@@ -83,7 +84,7 @@ function checkWords (vocabArray) {
     var beVerbs = ['is', 'are', 'am', 'was', 'were', 'been', 'be', 'being', 're'];
     var conjunction = ['though', 'although', 'though', 'while', 'if', 'only', 'unless', 'until', 'provided', 'assuming', 'that', 'even', 'case', 'than', 'rather', 'whether', 'much', 'whereas', 'because', 'since', 'so', 'why', 'how', 'who', 'whoever', 'whom', 'whomever', 'whose', 'where', 'wherever', 'which', 'whatever','after', 'before', 'now', 'once', 'since', 'till', 'until', 'when', 'whenever', 'while', 'or'];
 
-    vocabArray.filter(function (item) {
+    vocabArray.filter (function (item) {
         item = item.toLowerCase();
         if (conjunction.indexOf(item) === -1 && beVerbs.indexOf(item) === -1 && preposition.indexOf(item) === -1 && pronoun.indexOf(item) === -1 && modalVerbs.indexOf(item) === -1 && item.length >= 2) {
             if (!Number(item)) {
@@ -91,11 +92,12 @@ function checkWords (vocabArray) {
             }
         }
     });
+
     return filterArray;
 }
 
 function showResult(storage) {
-    var a = [];
+    var highestFrequentItems = [];
 
     while (result.children.length > 1) {
         if (result.lastElementChild.className !== 'superhighArea') {
@@ -129,72 +131,30 @@ function showResult(storage) {
 
         if (storage[keys] >= 6) {
             word.classList.add('superHigh');
-            a.push(word);
-            //result.appendChild(word);
-            // highFrequencyArea.appendChild(word);
+            highestFrequentItems.push(word);
         }
     }
-    debugger;
+
     var allWords = document.querySelectorAll('.keyWords');
-    for (var i = 0; i < a.length; i++) {
-        result.insertBefore(a[i], allWords[parseInt(Object.keys(storage).length / 2)]);
+
+    for (var i = 0; i < highestFrequentItems.length; i++) {
+        result.insertBefore(highestFrequentItems[i], allWords[parseInt(Object.keys(storage).length / 2)]);
     }
-    // console.log(Object.keys(storage).length);
-    // var allWords = document.querySelectorAll('.keyWords');
-    // result.insertBefore(highFrequencyArea, parseInt(allWords[Object.keys(storage).length / 2]));
 
     var newNotice = document.querySelector('.notice');
     newNotice.style.display = 'block';
-
-    var orderingButton = document.querySelector('.orderingStart');
-    var keyWords = document.querySelectorAll('.keyWords');
-    orderingButton.style.display = 'block';
-    orderingButton.addEventListener('click', changeClassName);
-
-    function changeClassName(event) {
-        if (event.target.className === 'orderingStart') {
-            event.target.className = 'orderingStop';
-            event.target.innerText = 'Drag Ordering Stop';
-            for (var i = 0; i < keyWords.length; i++) {
-                keyWords[i].removeEventListener('click', moveElements);
-                keyWords[i].addEventListener('drag', dragOver);
-                keyWords[i].addEventListener('dragend', dragEnd);
-            }
-            return;
-        }
-
-        if (event.target.className === 'orderingStop') {
-            event.target.className = 'orderingStart';
-            event.target.innerText = 'Drag Ordering Start';
-            for (var i = 0; i < keyWords.length; i++) {
-                keyWords[i].addEventListener('click', moveElements);
-            }
-            return;
-        }
-    }
-
 }
 
-function dragOver(event) {
-    debugger;
-    event.preventDefault();
-    console.log(1);
-}
-function dragEnd() {
-    debugger;
-    console.log(2);
-}
 
 function moveElements(event) {
+    var newNotice = document.querySelector('.notice');
     var target = event.target;
     target.classList.add('like');
     var likes = document.querySelectorAll('.like');
-    var newTextbox = document.querySelector('.newSentence');
+
     if (likes.length === 5) {
-        // newTextbox.style.display = "block";
         setTimeout(arrangeLikes,300);
-        var newNotice = document.querySelector('.notice');
-        newNotice.innerHTML = "Choose your favorite word!"
+        newNotice.innerHTML = 'Choose your favorite word!'
     }
 }
 
@@ -202,45 +162,38 @@ function arrangeLikes() {
     var likeWords = document.querySelectorAll('.like');
     var wordBox = document.querySelector('.newWordBox');
     var newNotice = document.querySelector('.notice');
-    newNotice.innerHTML = "Try to make a sentence with your favorite word"
+    newNotice.innerHTML = 'Try to make a sentence with your favorite word';
 
     for (var i = 0; i < likeWords.length; i++) {
         likeWords[i].className = '';
         likeWords[i].removeEventListener('click', moveElements);
         wordBox.appendChild(likeWords[i]);
-
         likeWords[i].addEventListener('click', writingForm);
     }
 }
 
 function writingForm(event) {
-    // var notePad = document.querySelector('.newSentence');
-    // notePad.style.display = 'block';
     var writeSentence = document.querySelector('.writingFunction');
-    writeSentence.style.display = 'block';
     var favoriteWord = event.target;
-    console.log(favoriteWord);
     var favoriteWordBox = document.querySelector('.favoriteWord');
-    favoriteWordBox.innerHTML = favoriteWord.innerText;
-
     var completeButton = document.querySelector('.complete');
+
+    writeSentence.style.display = 'block';
+    favoriteWordBox.innerHTML = favoriteWord.innerText;
     completeButton.addEventListener('click', showCompletedSentence);
 }
 
 function showCompletedSentence() {
     var writeSentence = document.querySelector('.writingArea');
-    writeSentence.style.display = 'none';
     var completeButton = document.querySelector('.complete');
-    completeButton.style.display = 'none';
-
     var completedSentence = document.createElement('div');
     var sentenceByUser = document.querySelector('.newSentence');
-    completedSentence.innerHTML = sentenceByUser.value;
-    completedSentence.classList.add('completedSentence');
     var completeBox = document.querySelector('.completeBox');
 
+    writeSentence.style.display = 'none';
+    completeButton.style.display = 'none';
+    completedSentence.innerHTML = sentenceByUser.value;
+    completedSentence.classList.add('completedSentence');
     completeBox.appendChild(completedSentence);
     completedSentence.classList.add('show');
 }
-
-

@@ -31,6 +31,11 @@ var result = document.querySelector('.result');
 function saveWords (wordSave) {
     wordSave = {};
     var content = document.querySelector('.content');
+    var textCount = content.value.length;
+    var countBox = document.querySelector('.textCount');
+
+    countBox.innerHTML = "Text Count : " + textCount;
+
     var checkAgain = content.value.split("");
 
     for (var i = 0; i < checkAgain.length; i++) {
@@ -38,7 +43,11 @@ function saveWords (wordSave) {
             checkAgain[i] = "";
         }
         if(checkAgain[i].charCodeAt() < 65  && checkAgain[i].charCodeAt() !== 32){
-            checkAgain[i] = "";
+            if (checkAgain[i].charCodeAt() === 13 || checkAgain[i].charCodeAt() === 10) {
+                checkAgain[i] = " ";
+            } else {
+                checkAgain[i] = "";
+            }
         }
         if(checkAgain[i].charCodeAt() > 90 && checkAgain[i].charCodeAt() < 97){
             checkAgain[i] = "";
@@ -61,6 +70,7 @@ function saveWords (wordSave) {
     }
     showResult(wordSave);
     console.log(wordSave);
+    console.log(content.value.length);
     var keyWords = document.querySelectorAll('.keyWords');
 
     for (var i = 0; i < keyWords.length; i++) {
@@ -153,6 +163,8 @@ function writingForm(event) {
     // var notePad = document.querySelector('.newSentence');
     // notePad.style.display = 'block';
     debugger;
+    var writeSentence = document.querySelector('.writingFunction');
+    writeSentence.style.display = 'block';
     var favoriteWord = event.target;
     console.log(favoriteWord);
     var favoriteWordBox = document.querySelector('.favoriteWord');

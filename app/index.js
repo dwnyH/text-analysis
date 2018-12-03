@@ -7,8 +7,7 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 // ================================
 
 var content = document.querySelector('.content');
-var keywords = document.querySelectorAll('div');
-content.addEventListener('keypress', countChars);
+content.addEventListener('keydown', countChars);
 
 function countChars (event) {
     var wordStorage = {};
@@ -69,8 +68,6 @@ function saveWords (wordSave) {
         }
     }
     showResult(wordSave);
-    console.log(wordSave);
-    console.log(content.value.length);
     var keyWords = document.querySelectorAll('.keyWords');
 
     for (var i = 0; i < keyWords.length; i++) {
@@ -149,6 +146,43 @@ function showResult(storage) {
     var newNotice = document.querySelector('.notice');
     newNotice.style.display = 'block';
 
+    var orderingButton = document.querySelector('.orderingStart');
+    var keyWords = document.querySelectorAll('.keyWords');
+    orderingButton.style.display = 'block';
+    orderingButton.addEventListener('click', changeClassName);
+
+    function changeClassName(event) {
+        if (event.target.className === 'orderingStart') {
+            event.target.className = 'orderingStop';
+            event.target.innerText = 'Drag Ordering Stop';
+            for (var i = 0; i < keyWords.length; i++) {
+                keyWords[i].removeEventListener('click', moveElements);
+                keyWords[i].addEventListener('drag', dragOver);
+                keyWords[i].addEventListener('dragend', dragEnd);
+            }
+            return;
+        }
+
+        if (event.target.className === 'orderingStop') {
+            event.target.className = 'orderingStart';
+            event.target.innerText = 'Drag Ordering Start';
+            for (var i = 0; i < keyWords.length; i++) {
+                keyWords[i].addEventListener('click', moveElements);
+            }
+            return;
+        }
+    }
+
+}
+
+function dragOver(event) {
+    debugger;
+    event.preventDefault();
+    console.log(1);
+}
+function dragEnd() {
+    debugger;
+    console.log(2);
 }
 
 function moveElements(event) {
@@ -160,13 +194,15 @@ function moveElements(event) {
         // newTextbox.style.display = "block";
         setTimeout(arrangeLikes,300);
         var newNotice = document.querySelector('.notice');
-        newNotice.innerHTML = "Try to make a sentence with your favorite word!"
+        newNotice.innerHTML = "Choose your favorite word!"
     }
 }
 
 function arrangeLikes() {
     var likeWords = document.querySelectorAll('.like');
     var wordBox = document.querySelector('.newWordBox');
+    var newNotice = document.querySelector('.notice');
+    newNotice.innerHTML = "Try to make a sentence with your favorite word"
 
     for (var i = 0; i < likeWords.length; i++) {
         likeWords[i].className = '';
@@ -206,3 +242,5 @@ function showCompletedSentence() {
     completeBox.appendChild(completedSentence);
     completedSentence.classList.add('show');
 }
+
+

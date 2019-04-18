@@ -1,5 +1,7 @@
-#Keyword Analysis
+# Keyword Analysis
 바닐라 javascript를 이용한 텍스트 분석 어플리케이션
+
+![preview](https://github.com/hiiiii11/text-analysis/blob/master/keyword_analysis_dawoon.gif)
 
 ## Setup
 
